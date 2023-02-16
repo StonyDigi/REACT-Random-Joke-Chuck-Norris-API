@@ -1,24 +1,37 @@
-import logo from './logo.svg';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import './App.css';
+import Joke from './components/Joke';
 
 function App() {
+
+  const [joke, setJoke] = useState("");
+
+  useEffect(() => {
+    axios.get('https://api.chucknorris.io/jokes/random')
+    .then(res => setJoke(res.data.value))
+  }, [])
+
+
+  const getRandomJoke = () => {
+    axios.get('https://api.chucknorris.io/jokes/random')
+    .then(res => setJoke(res.data.value))
+
+    document.getElementById('jokeContainer').innerHTML = `<p><strong>${joke}</strong></p>`;
+
+  }
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <>
+    <div className="result">
+      
+      <h1>React-Joke-Chuck-Norris Api</h1>
+
+      <Joke id='jokeContainer' click={getRandomJoke} />
+
     </div>
+    
+    </>
   );
 }
 
